@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz da Turma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#12131f;
+    --bg-panel:#1b1d2e;
+    --bg-panel-alt:#20223a;
+    --line:#2a2d45;
+    --text-primary:#f2efe9;
+    --text-muted:#9498b0;
+    --success:#3FA88C;
+    --danger:#e0617e;
+    --radius:14px;
+    --radius-sm:8px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg-deep);
+    color:var(--text-primary);
+    font-family:'Work Sans',sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(155,123,239,0.10), transparent 45%),
+      radial-gradient(circle at 85% 100%, rgba(91,141,239,0.08), transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+  #app{
+    position:relative;
+    z-index:1;
+    max-width:760px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
+
+  h1,h2,h3{
+    font-family:'Space Grotesk',sans-serif;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.02em;
+  }
+  button{
+    font-family:'Work Sans',sans-serif;
+    cursor:pointer;
+    border:none;
+    background:none;
+    color:inherit;
+  }
+  button:focus-visible,
+  a:focus-visible{
+    outline:2px solid var(--text-primary);
+    outline-offset:3px;
+  }
+
+  /* ---------- Header ---------- */
+  .top-bar{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  .top-bar .eyebrow{
+    font-size:12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+  }
+  .top-bar h1{
+    font-size:28px;
+    font-weight:700;
+  }
+  .reset-link{
+    font-size:12px;
+    color:var(--text-muted);
+    text-decoration:underline;
+    text-decoration-color:var(--line);
+  }
+  .reset-link:hover{ color:var(--text-primary); }
+  .top-links{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  /* ---------- Name field (home) ---------- */
+  .name-field{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:14px 16px;
+    margin-bottom:22px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .name-field label{
+    font-size:12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .name-field input{
+    background:var(--bg-panel-alt);
+    border:1px solid var(--line);
+    border-radius:7px;
+    padding:13px 14px;
+    font-size:16px;
+    color:var(--text-primary);
+    font-family:'Work Sans',sans-serif;
+  }
+  .name-field input:focus-visible{
+    outline:2px solid var(--text-primary);
+    outline-offset:1px;
+  }
+  .name-hint{
+    font-size:12px;
+    color:var(--text-muted);
+    min-height:14px;
+  }
+  .name-hint.is-error{ color:var(--danger); }
+
+  /* ---------- Ranking screen ---------- */
+  .ranking-tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:18px 0 16px;
+  }
+  .rank-tab{
+    --accent:#999;
+    font-size:13px;
+    font-weight:600;
+    padding:10px 16px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    color:var(--text-muted);
+  }
+  .rank-tab:hover{ border-color:var(--accent); color:var(--text-primary); }
+  .rank-tab.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--bg-deep);
+  }
+  .ranking-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .ranking-row{
+    display:grid;
+    grid-template-columns:26px 1fr auto auto;
+    align-items:center;
+    gap:12px;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:11px 14px;
+    font-size:14px;
+  }
+  .rank-pos{ color:var(--text-muted); font-size:12px; }
+  .rank-name{ font-weight:600; }
+  .rank-detail{ color:var(--text-muted); font-size:12px; white-space:nowrap; }
+  .rank-score{ font-size:13px; white-space:nowrap; }
+  .ranking-empty{
+    color:var(--text-muted);
+    font-size:13.5px;
+    padding:18px 4px;
+  }
+  .ranking-panel{
+    margin-top:30px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+  }
+  .ranking-panel-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .ranking-panel-head h2{
+    font-size:18px;
+    font-weight:600;
+  }
+  .ranking-panel-note{
+    font-size:11px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- Boletim / category stamps (home) ---------- */
+  .stamp-row{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:8px;
+  }
+  @media (max-width:520px){
+    .stamp-row{ grid-template-columns:1fr; }
+  }
+  .stamp{
+    --accent: #999;
+    position:relative;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--accent);
+    border-radius:var(--radius-sm);
+    padding:16px 16px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .stamp:hover{ transform:translateY(-2px); }
+  .stamp-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .stamp-code{
+    font-size:11px;
+    color:var(--accent);
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:3px 7px;
+  }
+  .stamp-name{
+    font-size:17px;
+    font-weight:600;
+    font-family:'Space Grotesk',sans-serif;
+  }
+  .stamp-score{
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .stamp-score b{ color:var(--text-primary); }
+  .stamp-play{
+    margin-top:auto;
+    align-self:flex-start;
+    font-size:14px;
+    font-weight:600;
+    color:var(--bg-deep);
+    background:var(--accent);
+    padding:11px 20px;
+    border-radius:8px;
+  }
+  .stamp-play:hover{ filter:brightness(1.08); }
+  .stamp-play:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+    filter:none;
+  }
+  .stamp-play:disabled:hover{ filter:none; }
+
+  .home-footnote{
+    margin-top:28px;
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+
+  /* ---------- Quiz screen ---------- */
+  .quiz-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .quiz-cat{
+    font-size:13px;
+    font-weight:600;
+    color:var(--accent);
+  }
+  .quiz-progress-label{
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .progress-track{
+    height:6px;
+    background:var(--bg-panel);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    transition:width .25s ease;
+  }
+
+  .question-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px;
+  }
+  .question-text{
+    font-size:21px;
+    font-weight:600;
+    line-height:1.4;
+    margin-bottom:18px;
+  }
+  .question-image-wrap{
+    background:var(--bg-panel-alt);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:18px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .question-image-wrap img{
+    max-width:100%;
+    max-height:240px;
+    display:block;
+    border-radius:6px;
+  }
+  .question-image-wrap svg{ max-height:160px; }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .option{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-align:left;
+    background:var(--bg-panel-alt);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:16px 16px;
+    font-size:16px;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .option:hover:not(:disabled){
+    border-color:var(--accent);
+  }
+  .option-letter{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--text-muted);
+    border:1px solid var(--line);
+    border-radius:5px;
+    width:22px;
+    height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .option.is-correct{
+    border-color:var(--success);
+    background:rgba(63,168,140,0.12);
+  }
+  .option.is-correct .option-letter{ border-color:var(--success); color:var(--success); }
+  .option.is-wrong{
+    border-color:var(--danger);
+    background:rgba(224,97,126,0.12);
+  }
+  .option.is-wrong .option-letter{ border-color:var(--danger); color:var(--danger); }
+  .option:disabled{ cursor:default; }
+
+  .explanation{
+    margin-top:16px;
+    font-size:13.5px;
+    color:var(--text-muted);
+    line-height:1.5;
+    border-top:1px solid var(--line);
+    padding-top:14px;
+  }
+
+  .quiz-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:20px;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:var(--bg-deep);
+    font-weight:600;
+    font-size:15px;
+    padding:14px 26px;
+    border-radius:9px;
+  }
+  .btn-primary:hover{ filter:brightness(1.08); }
+  .btn-primary:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+    filter:none;
+  }
+  .btn-ghost{
+    border:1px solid var(--line);
+    color:var(--text-primary);
+    font-size:15px;
+    padding:13px 20px;
+    border-radius:9px;
+  }
+  .btn-ghost:hover{ border-color:var(--text-muted); }
+
+  .back-link{
+    font-size:13px;
+    color:var(--text-muted);
+    margin-bottom:18px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .back-link:hover{ color:var(--text-primary); }
+
+  /* ---------- Result screen ---------- */
+  .result-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 26px;
+    text-align:center;
+  }
+  .result-score{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:54px;
+    font-weight:700;
+    color:var(--accent);
+    line-height:1;
+  }
+  .result-sub{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--text-muted);
+    margin-top:8px;
+  }
+  .result-msg{
+    margin-top:14px;
+    font-size:15px;
+    color:var(--text-primary);
+  }
+  .result-actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:24px;
+    flex-wrap:wrap;
+  }
+  .review-list{
+    margin-top:28px;
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .review-item{
+    display:flex;
+    gap:10px;
+    font-size:13.5px;
+    line-height:1.4;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    background:var(--bg-panel-alt);
+  }
+  .review-mark{
+    flex-shrink:0;
+    font-weight:700;
+  }
+  .review-mark.ok{ color:var(--success); }
+  .review-mark.no{ color:var(--danger); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================================
+   CONFIGURAÇÃO RÁPIDA
+   ========================================================================= */
+// Quantas perguntas sortear por rodada de cada matéria (se a matéria tiver
+// menos perguntas que esse número, usa todas as que existirem).
+const QUESTIONS_PER_ROUND = 5;
+
+/* =========================================================================
+   MATÉRIAS / CATEGORIAS
+   Para adicionar uma nova matéria: copie uma linha, mude id, name, code e
+   color. Depois crie a lista de perguntas correspondente em QUESTIONS abaixo
+   usando a mesma "id".
+   ========================================================================= */
+const CATEGORIES = [
+  { id: 'ingles', name: 'Inglês',         code: 'ENG', color: '#E0A458' },
+  { id: 'php',    name: 'PHP',            code: 'PHP', color: '#9B7BEF' },
+  { id: 'adm',    name: 'ADM',            code: 'ADM', color: '#3FA88C' },
+  { id: 'csharp', name: 'C#',             code: 'C#',  color: '#5B8DEF' },
+  { id: 'bd',     name: 'Banco de Dados', code: 'BD',  color: '#C75FAE' },
+  { id: 'libras', name: 'Libras',         code: 'LIB', color: '#E0617E' },
+];
+
+/* =========================================================================
+   BANCO DE PERGUNTAS — SUBSTITUA pelo conteúdo real de cada matéria.
+   As perguntas abaixo são EXEMPLOS apenas para testar a estrutura.
+
+   Formato de cada pergunta:
+   {
+     q: "Texto da pergunta",
+     options: ["opção A", "opção B", "opção C", "opção D"],
+     answer: 0,                 // índice (0,1,2,3...) da opção correta dentro de "options"
+     explanation: "opcional, aparece depois de responder",
+     image: { type: "url", value: "images/minha-imagem.gif" }   // OPCIONAL, ver abaixo
+   }
+
+   Sobre o campo "image" (usado principalmente em Libras, mas funciona em
+   qualquer matéria):
+     - Para usar uma imagem/gif sua: image: { type: "url", value: "images/nome-do-arquivo.gif" }
+       Basta colocar o arquivo de imagem na pasta "images" ao lado deste
+       index.html e apontar o nome aqui.
+     - Pode também usar um link de imagem da internet:
+       image: { type: "url", value: "https://meusite.com/sinal-obrigado.gif" }
+     - Se não usar imagem, simplesmente não inclua o campo "image".
+   ========================================================================= */
+const QUESTIONS = {
+
+  ingles: [
+    {
+      q: "Qual é o passado simples do verbo 'go'?",
+      options: ["goed", "went", "gone", "going"],
+      answer: 1,
+      explanation: "'Go' é um verbo irregular: go → went → gone."
+    },
+    {
+      q: "Como se diz corretamente 'Eu tenho 20 anos' em inglês?",
+      options: ["I have 20 years", "I am 20 years old", "I has 20 years old", "I am have 20 years"],
+      answer: 1,
+      explanation: "Em inglês usa-se 'to be' (am/is/are) para idade, não 'to have'."
+    },
+    {
+      q: "Qual a melhor tradução para a palavra 'however'?",
+      options: ["portanto", "além disso", "no entanto", "porque"],
+      answer: 2
+    }
+  ],
+
+  php: [
+    {
+      q: "Qual símbolo é usado para declarar uma variável em PHP?",
+      options: ["&", "$", "#", "@"],
+      answer: 1,
+      explanation: "Toda variável em PHP começa com o símbolo $, por exemplo: $nome."
+    },
+    {
+      q: "Qual das opções é uma forma válida de exibir um texto na tela em PHP?",
+      options: ['echo "texto";', 'System.out.println("texto");', 'console.log("texto");', 'fmt.Print("texto")'],
+      answer: 0
+    },
+    {
+      q: "Qual extensão de arquivo é usada para scripts PHP?",
+      options: [".pp", ".phtm", ".php", ".pht"],
+      answer: 2
+    }
+  ],
+
+  adm: [
+    {
+      q: "Segundo Fayol, qual das alternativas é uma das funções clássicas da administração?",
+      options: ["Vender", "Planejar", "Programar", "Fabricar"],
+      answer: 1
+    },
+    {
+      q: "O que a sigla SWOT (ou FOFA, em português) avalia em uma análise estratégica?",
+      options: [
+        "Forças, Oportunidades, Fraquezas e Ameaças",
+        "Foco, Organização, Finanças e Ação",
+        "Função, Operação, Fluxo e Auditoria",
+        "Faturamento, Oferta, Frequência e Avaliação"
+      ],
+      answer: 0
+    },
+    {
+      q: "Qual é a principal função do setor de Recursos Humanos em uma empresa?",
+      options: [
+        "Calcular impostos",
+        "Desenvolver software",
+        "Gerenciar pessoas e processos ligados aos colaboradores",
+        "Fazer marketing digital"
+      ],
+      answer: 2
+    }
+  ],
+
+  csharp: [
+    {
+      q: "Qual é a extensão padrão de um arquivo de código C#?",
+      options: [".cpp", ".csx", ".cs", ".c#"],
+      answer: 2
+    },
+    {
+      q: "Qual palavra-chave é usada para declarar uma classe em C#?",
+      options: ["function", "def", "class", "struct"],
+      answer: 2
+    },
+    {
+      q: "Qual destes é um tipo de dado válido em C#?",
+      options: ["numeric", "integer", "digit", "int"],
+      answer: 3
+    }
+  ],
+
+  bd: [
+    {
+      q: "O que significa a sigla SQL?",
+      options: ["Sequential Question Logic", "Structured Query Language", "System Query Level", "Standard Question List"],
+      answer: 1
+    },
+    {
+      q: "Qual comando SQL é usado para buscar dados em uma tabela?",
+      options: ["GET", "FIND", "SELECT", "FETCH"],
+      answer: 2
+    },
+    {
+      q: "O que é uma chave primária (Primary Key)?",
+      options: [
+        "Um campo que pode se repetir livremente",
+        "Um campo que identifica unicamente cada registro da tabela",
+        "Um tipo de índice sem restrição",
+        "Um comando para apagar tabelas"
+      ],
+      answer: 1
+    }
+  ],
+
+  // ATENÇÃO Libras: as 3 perguntas abaixo são só um EXEMPLO DE ESTRUTURA.
+  // As imagens são placeholders genéricos (não representam sinais reais).
+  // Substitua "options", "answer" e principalmente o campo "image" pelas
+  // imagens/gifs reais dos sinais antes de usar com os alunos.
+  libras: [
+    {
+      q: "[EXEMPLO] Qual o significado deste sinal?",
+      image: { type: "svg", value: "hand-1" },
+      options: ["Opção de exemplo A", "Opção de exemplo B", "Opção de exemplo C", "Opção de exemplo D"],
+      answer: 0,
+      explanation: "Substitua esta pergunta e a imagem pelo sinal real que vocês querem ensinar."
+    },
+    {
+      q: "[EXEMPLO] Qual o significado deste sinal?",
+      image: { type: "svg", value: "hand-2" },
+      options: ["Opção de exemplo A", "Opção de exemplo B", "Opção de exemplo C", "Opção de exemplo D"],
+      answer: 1
+    },
+    {
+      q: "[EXEMPLO] Qual o significado deste sinal?",
+      image: { type: "svg", value: "hand-3" },
+      options: ["Opção de exemplo A", "Opção de exemplo B", "Opção de exemplo C", "Opção de exemplo D"],
+      answer: 2
+    }
+  ]
+};
+
+/* =========================================================================
+   Placeholders SVG genéricos só para a demonstração do Libras funcionar
+   sem precisar de arquivos externos. Troque pelo campo image:{type:"url",...}
+   apontando para suas imagens/gifs reais quando estiver pronto.
+   ========================================================================= */
+const SVG_PLACEHOLDERS = {
+  'hand-1': `<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="152" height="152" rx="12" fill="none" stroke="#3a3d5c" stroke-width="2" stroke-dasharray="6 6"/><path d="M60 110 V60 a8 8 0 0 1 16 0 v30 M76 90 V50 a8 8 0 0 1 16 0 v40 M92 92 V58 a8 8 0 0 1 16 0 v32 M108 100 V70 a7 7 0 0 1 14 0 v30 a26 26 0 0 1 -26 26 h-22 a26 26 0 0 1 -26 -26 v-14 a8 8 0 0 1 16 0" fill="none" stroke="#E0617E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text x="80" y="142" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#9498b0">IMAGEM DO SINAL AQUI</text></svg>`,
+  'hand-2': `<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="152" height="152" rx="12" fill="none" stroke="#3a3d5c" stroke-width="2" stroke-dasharray="6 6"/><circle cx="80" cy="75" r="34" fill="none" stroke="#E0617E" stroke-width="4"/><path d="M62 75 a18 18 0 0 1 36 0" fill="none" stroke="#E0617E" stroke-width="4" stroke-linecap="round"/><text x="80" y="142" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#9498b0">IMAGEM DO SINAL AQUI</text></svg>`,
+  'hand-3': `<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="152" height="152" rx="12" fill="none" stroke="#3a3d5c" stroke-width="2" stroke-dasharray="6 6"/><path d="M50 100 L80 50 L110 100 Z" fill="none" stroke="#E0617E" stroke-width="4" stroke-linejoin="round"/><line x1="50" y1="100" x2="110" y2="100" stroke="#E0617E" stroke-width="4"/><text x="80" y="142" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#9498b0">IMAGEM DO SINAL AQUI</text></svg>`
+};
+
+/* =========================================================================
+   ARMAZENAMENTO (ranking salvo no navegador, por nome de jogador)
+   Tenta usar localStorage; se não estiver disponível (ex.: numa pré-visualização
+   restrita), usa um objeto em memória apenas para a sessão atual, sem quebrar o app.
+   ========================================================================= */
+const PLAYERS_KEY = 'quizTurma:players:v2';
+const LAST_NAME_KEY = 'quizTurma:lastName:v2';
+let memoryPlayers = {};
+let memoryLastName = '';
+let storageIsAvailable = true;
+
+function loadPlayers(){
+  try{
+    const raw = localStorage.getItem(PLAYERS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){
+    storageIsAvailable = false;
+    return memoryPlayers;
+  }
+}
+function savePlayers(data){
+  try{
+    localStorage.setItem(PLAYERS_KEY, JSON.stringify(data));
+  }catch(e){
+    storageIsAvailable = false;
+    memoryPlayers = data;
+  }
+}
+function loadLastName(){
+  try{
+    return localStorage.getItem(LAST_NAME_KEY) || '';
+  }catch(e){
+    return memoryLastName;
+  }
+}
+function saveLastName(name){
+  try{
+    localStorage.setItem(LAST_NAME_KEY, name);
+  }catch(e){
+    memoryLastName = name;
+  }
+}
+function recordResult(name, categoryId, correct, total){
+  const players = loadPlayers();
+  const pct = Math.round((correct/total)*100);
+  const playerData = players[name] || {};
+  const prev = playerData[categoryId] || { best: 0, attempts: 0 };
+  playerData[categoryId] = {
+    best: Math.max(prev.best, pct),
+    attempts: prev.attempts + 1,
+    last: pct
+  };
+  players[name] = playerData;
+  savePlayers(players);
+}
+function computeCategoryRanking(categoryId){
+  const players = loadPlayers();
+  return Object.keys(players)
+    .filter(name => players[name][categoryId])
+    .map(name => ({
+      name,
+      best: players[name][categoryId].best,
+      attempts: players[name][categoryId].attempts
+    }))
+    .sort((a,b) => b.best - a.best || a.attempts - b.attempts);
+}
+function computeOverallRanking(){
+  const players = loadPlayers();
+  return Object.keys(players)
+    .map(name => {
+      const cats = players[name];
+      const catIds = Object.keys(cats);
+      const total = catIds.reduce((sum,id) => sum + cats[id].best, 0);
+      const attempts = catIds.reduce((sum,id) => sum + cats[id].attempts, 0);
+      return { name, total, subjectsPlayed: catIds.length, attempts };
+    })
+    .sort((a,b) => b.total - a.total || b.subjectsPlayed - a.subjectsPlayed);
+}
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* =========================================================================
+   ESTADO / NAVEGAÇÃO
+   ========================================================================= */
+let state = { screen: 'home' };
+let currentPlayerName = loadLastName();
+let rankingTab = 'geral';
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(categoryId){
+  const bank = QUESTIONS[categoryId] || [];
+  const picked = shuffle(bank).slice(0, Math.min(QUESTIONS_PER_ROUND, bank.length));
+  // embaralha também as opções de cada pergunta, mantendo o índice correto
+  const rounds = picked.map(q => {
+    const order = shuffle(q.options.map((opt, i) => i));
+    return {
+      q: q.q,
+      image: q.image,
+      explanation: q.explanation,
+      options: order.map(i => q.options[i]),
+      answerIndex: order.indexOf(q.answer)
+    };
+  });
+  state = {
+    screen: 'quiz',
+    categoryId,
+    rounds,
+    current: 0,
+    correctCount: 0,
+    answered: false,
+    selected: null,
+    review: []
+  };
+  render();
+}
+
+function tryPlay(categoryId){
+  const input = document.getElementById('player-name-input');
+  const name = input ? input.value.trim() : currentPlayerName;
+  const hint = document.getElementById('name-hint');
+  if(!name){
+    if(hint){ hint.textContent = 'Digite seu nome antes de jogar.'; hint.classList.add('is-error'); }
+    if(input) input.focus();
+    return;
+  }
+  if(hint){ hint.textContent = ''; hint.classList.remove('is-error'); }
+  currentPlayerName = name;
+  saveLastName(name);
+  startQuiz(categoryId);
+}
+
+function goHome(){
+  state = { screen: 'home' };
+  render();
+}
+
+function setRankingTab(tab){
+  rankingTab = tab;
+  render();
+}
+
+function selectOption(idx){
+  if(state.answered) return;
+  const round = state.rounds[state.current];
+  const isCorrect = idx === round.answerIndex;
+  state.answered = true;
+  state.selected = idx;
+  if(isCorrect) state.correctCount++;
+  state.review.push({
+    q: round.q,
+    correct: isCorrect,
+    yourAnswer: round.options[idx],
+    rightAnswer: round.options[round.answerIndex]
+  });
+  render();
+}
+
+function nextQuestion(){
+  if(state.current + 1 < state.rounds.length){
+    state.current++;
+    state.answered = false;
+    state.selected = null;
+    render();
+  }else{
+    recordResult(currentPlayerName, state.categoryId, state.correctCount, state.rounds.length);
+    state.screen = 'result';
+    render();
+  }
+}
+
+function clearAllScores(){
+  if(!confirm('Tem certeza que deseja apagar todo o ranking salvo neste navegador? Isso afeta todos os nomes que já jogaram aqui.')) return;
+  savePlayers({});
+  goHome();
+}
+
+/* =========================================================================
+   RENDER
+   ========================================================================= */
+function catById(id){ return CATEGORIES.find(c => c.id === id); }
+
+function renderHome(){
+  const hasName = !!currentPlayerName.trim();
+  const cards = CATEGORIES.map(cat => {
+    return `
+      <div class="stamp" style="--accent:${cat.color}">
+        <div class="stamp-head">
+          <span class="stamp-name">${cat.name}</span>
+          <span class="stamp-code mono">${cat.code}</span>
+        </div>
+        <button class="stamp-play" data-action="play-home" data-cat="${cat.id}" ${hasName ? '' : 'disabled'}>Jogar</button>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="top-bar">
+      <div>
+        <div class="eyebrow mono">QUIZ DA TURMA</div>
+        <h1>Escolha uma matéria</h1>
+      </div>
+      <div class="top-links">
+        <button class="reset-link" data-action="reset">limpar ranking salvo</button>
+      </div>
+    </div>
+    <div class="name-field">
+      <label for="player-name-input">Quem vai jogar?</label>
+      <input id="player-name-input" type="text" placeholder="Digite seu nome" maxlength="40" value="${escapeHtml(currentPlayerName)}">
+      <span class="name-hint" id="name-hint"></span>
+    </div>
+    <div class="stamp-row">${cards}</div>
+    ${renderRankingPanel(5)}
+  `;
+}
+
+function renderRankingPanel(limit){
+  const tabs = [{ id:'geral', label:'Geral', color:'#f2efe9' }]
+    .concat(CATEGORIES.map(c => ({ id:c.id, label:c.code, color:c.color })));
+
+  const tabsHtml = tabs.map(t => `
+    <button class="rank-tab ${rankingTab === t.id ? 'active' : ''}" style="--accent:${t.color}" data-action="rank-tab" data-tab="${t.id}">${t.label}</button>
+  `).join('');
+
+  let listHtml;
+  if(rankingTab === 'geral'){
+    const rows = computeOverallRanking().slice(0, limit);
+    listHtml = rows.length ? rows.map((r,i) => `
+      <div class="ranking-row">
+        <span class="rank-pos mono">${i+1}</span>
+        <span class="rank-name">${escapeHtml(r.name)}</span>
+        <span class="rank-detail mono">${r.subjectsPlayed} matéria${r.subjectsPlayed>1?'s':''}</span>
+        <span class="rank-score mono">${r.total} pts</span>
+      </div>
+    `).join('') : `<div class="ranking-empty">Ninguém jogou ainda. Jogue uma matéria para aparecer aqui.</div>`;
+  }else{
+    const cat = catById(rankingTab);
+    const rows = computeCategoryRanking(rankingTab).slice(0, limit);
+    listHtml = rows.length ? rows.map((r,i) => `
+      <div class="ranking-row">
+        <span class="rank-pos mono">${i+1}</span>
+        <span class="rank-name">${escapeHtml(r.name)}</span>
+        <span class="rank-detail mono">${r.attempts} tentativa${r.attempts>1?'s':''}</span>
+        <span class="rank-score mono">${r.best}%</span>
+      </div>
+    `).join('') : `<div class="ranking-empty">Ninguém jogou ${cat.name} ainda.</div>`;
+  }
+
+  return `
+    <div class="ranking-panel">
+      <div class="ranking-panel-head">
+        <h2>Top 5</h2>
+        <span class="ranking-panel-note mono">salvo neste navegador</span>
+      </div>
+      <div class="ranking-tabs">${tabsHtml}</div>
+      <div class="ranking-list">${listHtml}</div>
+    </div>
+  `;
+}
+
+function renderQuiz(){
+  const cat = catById(state.categoryId);
+  const round = state.rounds[state.current];
+  const total = state.rounds.length;
+
+  let imageHtml = '';
+  if(round.image){
+    if(round.image.type === 'svg'){
+      imageHtml = `<div class="question-image-wrap">${SVG_PLACEHOLDERS[round.image.value] || ''}</div>`;
+    }else if(round.image.type === 'url'){
+      imageHtml = `<div class="question-image-wrap"><img src="${round.image.value}" alt="Imagem da pergunta"></div>`;
+    }
+  }
+
+  const optionsHtml = round.options.map((opt, idx) => {
+    let cls = 'option';
+    if(state.answered){
+      if(idx === round.answerIndex) cls += ' is-correct';
+      else if(idx === state.selected) cls += ' is-wrong';
+    }
+    return `
+      <button class="${cls}" data-action="answer" data-idx="${idx}" ${state.answered ? 'disabled' : ''}>
+        <span class="option-letter">${String.fromCharCode(65+idx)}</span>
+        <span>${opt}</span>
+      </button>`;
+  }).join('');
+
+  const explanationHtml = (state.answered && round.explanation)
+    ? `<div class="explanation">${round.explanation}</div>` : '';
+
+  const isLast = state.current + 1 === total;
+
+  return `
+    <button class="back-link" data-action="home">← Voltar para o menu</button>
+    <div class="quiz-header">
+      <span class="quiz-cat" style="--accent:${cat.color}">${cat.name}</span>
+      <span class="quiz-progress-label mono">Pergunta ${state.current+1} de ${total}</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="--accent:${cat.color}; background:${cat.color}; width:${((state.current)/total)*100}%"></div>
+    </div>
+    <div class="question-card" style="--accent:${cat.color}">
+      <div class="question-text">${round.q}</div>
+      ${imageHtml}
+      <div class="options">${optionsHtml}</div>
+      ${explanationHtml}
+    </div>
+    <div class="quiz-actions">
+      <button class="btn-primary" style="--accent:${cat.color}; background:${cat.color}" data-action="next" ${state.answered ? '' : 'disabled'}>
+        ${isLast ? 'Ver resultado' : 'Próxima'}
+      </button>
+    </div>
+  `;
+}
+
+function renderResult(){
+  const cat = catById(state.categoryId);
+  const total = state.rounds.length;
+  const pct = Math.round((state.correctCount/total)*100);
+  let msg = 'Continue praticando!';
+  if(pct === 100) msg = 'Perfeito! Você acertou tudo.';
+  else if(pct >= 70) msg = 'Muito bom!';
+  else if(pct >= 40) msg = 'Quase lá, vale revisar o conteúdo.';
+
+  const reviewHtml = state.review.map(r => `
+    <div class="review-item">
+      <span class="review-mark ${r.correct ? 'ok' : 'no'}">${r.correct ? '✓' : '✕'}</span>
+      <span>
+        <strong>${r.q}</strong><br>
+        ${r.correct ? `Resposta: ${r.yourAnswer}` : `Você respondeu: ${r.yourAnswer} — Correta: ${r.rightAnswer}`}
+      </span>
+    </div>
+  `).join('');
+
+  return `
+    <button class="back-link" data-action="home">← Voltar para o menu</button>
+    <div class="result-card" style="--accent:${cat.color}">
+      <div class="eyebrow mono" style="color:${cat.color}">${cat.name.toUpperCase()}</div>
+      <div class="result-score">${pct}%</div>
+      <div class="result-sub mono">${state.correctCount} de ${total} corretas</div>
+      <div class="result-msg">${msg}</div>
+      <div class="result-actions">
+        <button class="btn-primary" style="background:${cat.color}" data-action="play-again" data-cat="${cat.id}">Jogar de novo</button>
+        <button class="btn-ghost" data-action="home">Voltar para o menu</button>
+      </div>
+      <div class="review-list">${reviewHtml}</div>
+    </div>
+  `;
+}
+
+function render(){
+  const app = document.getElementById('app');
+  if(state.screen === 'home') app.innerHTML = renderHome();
+  else if(state.screen === 'quiz') app.innerHTML = renderQuiz();
+  else app.innerHTML = renderResult();
+}
+
+document.getElementById('app').addEventListener('click', (e) => {
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const action = el.dataset.action;
+  if(action === 'play-home') tryPlay(el.dataset.cat);
+  else if(action === 'play-again') startQuiz(el.dataset.cat);
+  else if(action === 'home') goHome();
+  else if(action === 'rank-tab') setRankingTab(el.dataset.tab);
+  else if(action === 'answer') selectOption(Number(el.dataset.idx));
+  else if(action === 'next') nextQuestion();
+  else if(action === 'reset') clearAllScores();
+});
+
+document.getElementById('app').addEventListener('input', (e) => {
+  if(e.target && e.target.id === 'player-name-input'){
+    const hint = document.getElementById('name-hint');
+    const hasName = !!e.target.value.trim();
+    if(hint && hint.classList.contains('is-error') && hasName){
+      hint.textContent = '';
+      hint.classList.remove('is-error');
+    }
+    document.querySelectorAll('.stamp-play').forEach(btn => {
+      btn.disabled = !hasName;
+    });
+  }
+});
+
+document.getElementById('app').addEventListener('keydown', (e) => {
+  if(e.target && e.target.id === 'player-name-input' && e.key === 'Enter'){
+    e.preventDefault();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
