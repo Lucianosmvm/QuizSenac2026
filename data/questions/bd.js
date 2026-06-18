@@ -1,100 +1,202 @@
 const Q_BD = [
-    {
-      q: "O que é um banco de dados?",
-      options: [
-        "Um programa para criar sites",
-        "Uma coleção organizada de dados armazenados eletronicamente",
-        "Um tipo de servidor web",
-        "Um sistema operacional",
-        "Um protocolo de rede"
-      ],
-      answer: 1
-    },
-    {
-      q: "Qual comando SQL é usado para buscar dados em uma tabela?",
-      options: ["INSERT", "UPDATE", "DELETE", "SELECT", "CREATE"],
-      answer: 3
-    },
-    {
-      q: "O que significa SQL?",
-      options: [
-        "System Query Language",
-        "Structured Query Language",
-        "Simple Query Logic",
-        "Standard Query List",
-        "Secure Query Layer"
-      ],
-      answer: 1
-    },
-    {
-      q: "Qual é a função da chave primária (PRIMARY KEY) em uma tabela?",
-      options: [
-        "Criptografar os dados",
-        "Identificar cada registro de forma única",
-        "Conectar à internet",
-        "Definir o tipo de dado",
-        "Ordenar os registros"
-      ],
-      answer: 1
-    },
-    {
-      q: "O que é uma chave estrangeira (FOREIGN KEY)?",
-      options: [
-        "Uma chave usada para criptografia",
-        "Uma chave que vem de outro sistema",
-        "Uma coluna que referencia a chave primária de outra tabela",
-        "Uma chave duplicada em outra tabela",
-        "Um índice secundário"
-      ],
-      answer: 2
-    },
-    {
-      q: "Qual cláusula SQL é usada para filtrar grupos de registros após um GROUP BY?",
-      options: ["WHERE", "FILTER", "HAVING", "ORDER BY", "LIMIT"],
-      answer: 2
-    },
-    {
-      q: "O que é normalização em banco de dados?",
-      options: [
-        "Processo de criptografar os dados",
-        "Técnica de compressão de dados",
-        "Processo de organizar dados para reduzir redundância",
-        "Método de backup automático",
-        "Forma de indexar tabelas"
-      ],
-      answer: 2
-    },
-    {
-      q: "Qual das alternativas descreve corretamente a propriedade de Isolamento nas transações ACID?",
-      options: [
-        "Garante que os dados não sejam perdidos após um erro",
-        "Garante que transações simultâneas não interfiram entre si",
-        "Garante que a transação seja confirmada de forma permanente",
-        "Garante que todas as operações da transação sejam concluídas",
-        "Garante que os dados sejam consistentes antes e depois"
-      ],
-      answer: 1
-    },
-    {
-      q: "O que é um índice composto em banco de dados relacionais?",
-      options: [
-        "Um índice criado automaticamente pelo SGBD",
-        "Um índice que abrange mais de uma coluna",
-        "Um índice que armazena os dados em ordem decrescente",
-        "Um índice criado em tabelas temporárias",
-        "Um índice que referencia tabelas externas"
-      ],
-      answer: 1
-    },
-    {
-      q: "Em qual situação o uso de um índice pode piorar a performance de um banco de dados?",
-      options: [
-        "Em consultas com SELECT *",
-        "Em tabelas com poucos registros e muitas operações de escrita (INSERT/UPDATE/DELETE)",
-        "Em consultas com JOIN entre duas tabelas",
-        "Em colunas com valores únicos (alta cardinalidade)",
-        "Em tabelas somente leitura"
-      ],
-      answer: 1
-    }
-  ];
+  {
+    q: "O que é um banco de dados?",
+    options: [
+      "Um programa para criar apresentações",
+      "Um conjunto organizado de dados armazenados eletronicamente",
+      "Um sistema operacional",
+      "Um dispositivo de armazenamento físico"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual linguagem é mais utilizada para consultar bancos de dados relacionais?",
+    options: [
+      "HTML",
+      "CSS",
+      "SQL",
+      "Java"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que significa a sigla SQL?",
+    options: [
+      "Simple Query Language",
+      "Structured Query Language",
+      "System Quality Language",
+      "Standard Question Language"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual comando SQL é utilizado para consultar dados?",
+    options: [
+      "INSERT",
+      "UPDATE",
+      "SELECT",
+      "DELETE"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que é uma tabela em um banco de dados?",
+    options: [
+      "Um conjunto de linhas e colunas que armazena dados",
+      "Um programa para editar dados",
+      "Um tipo de servidor",
+      "Um arquivo de imagem"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que representa uma linha (registro) em uma tabela?",
+    options: [
+      "Um conjunto de tabelas",
+      "Um dado individual de uma coluna",
+      "Uma informação completa armazenada",
+      "Uma consulta SQL"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que representa uma coluna (campo) em uma tabela?",
+    options: [
+      "Uma característica ou atributo dos dados",
+      "Um conjunto de registros",
+      "Uma consulta ao banco",
+      "Uma chave estrangeira"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que é uma chave primária (Primary Key)?",
+    options: [
+      "Um campo que identifica unicamente cada registro",
+      "Um campo opcional",
+      "Uma tabela especial",
+      "Uma consulta SQL"
+    ],
+    answer: 0
+  },
+  {
+    q: "Qual comando SQL é utilizado para inserir dados?",
+    options: [
+      "SELECT",
+      "DELETE",
+      "INSERT",
+      "DROP"
+    ],
+    answer: 2
+  },
+  {
+    q: "Qual comando SQL é utilizado para atualizar dados?",
+    options: [
+      "UPDATE",
+      "INSERT",
+      "ALTER",
+      "SELECT"
+    ],
+    answer: 0
+  },
+  {
+    q: "Qual comando SQL é utilizado para remover registros?",
+    options: [
+      "DROP",
+      "DELETE",
+      "REMOVE",
+      "CLEAR"
+    ],
+    answer: 1
+  },
+  {
+    q: "O que é uma chave estrangeira (Foreign Key)?",
+    options: [
+      "Um campo que relaciona tabelas",
+      "Uma tabela duplicada",
+      "Um índice de pesquisa",
+      "Um tipo de consulta"
+    ],
+    answer: 0
+  },
+  {
+    q: "Qual banco de dados é amplamente utilizado em aplicações web?",
+    options: [
+      "Paint",
+      "MySQL",
+      "PowerPoint",
+      "Photoshop"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual comando SQL cria uma nova tabela?",
+    options: [
+      "CREATE TABLE",
+      "NEW TABLE",
+      "ADD TABLE",
+      "MAKE TABLE"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que significa BD Relacional?",
+    options: [
+      "Banco baseado apenas em textos",
+      "Banco que organiza dados em tabelas relacionadas",
+      "Banco armazenado apenas na nuvem",
+      "Banco sem estrutura definida"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual cláusula SQL é utilizada para filtrar resultados?",
+    options: [
+      "ORDER BY",
+      "GROUP BY",
+      "WHERE",
+      "VALUES"
+    ],
+    answer: 2
+  },
+  {
+    q: "Qual cláusula SQL é utilizada para ordenar resultados?",
+    options: [
+      "ORDER BY",
+      "SORT",
+      "FILTER",
+      "GROUP"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que é um SGBD?",
+    options: [
+      "Sistema Gerenciador de Banco de Dados",
+      "Sistema Geral de Backup de Dados",
+      "Software de Gráficos para Banco de Dados",
+      "Servidor de Gestão de Documentos"
+    ],
+    answer: 0
+  },
+  {
+    q: "Qual das opções abaixo é um exemplo de SGBD?",
+    options: [
+      "Excel",
+      "Word",
+      "MySQL",
+      "PowerPoint"
+    ],
+    answer: 2
+  },
+  {
+    q: "Qual é a principal função de um banco de dados?",
+    options: [
+      "Criar apresentações",
+      "Editar imagens",
+      "Armazenar, organizar e recuperar informações",
+      "Executar sistemas operacionais"
+    ],
+    answer: 2
+  }
+];

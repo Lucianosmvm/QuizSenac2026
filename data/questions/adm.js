@@ -1,112 +1,202 @@
 const Q_ADM = [
-    {
-      q: "O que é Administração?",
-      options: [
-        "Um conjunto de leis trabalhistas aplicadas em empresas",
-        "O processo de planejar, organizar, dirigir e controlar recursos para atingir objetivos",
-        "A área responsável apenas pelo controle financeiro de uma organização",
-        "Um método de produção industrial criado no século XIX",
-        "O departamento responsável pela contratação de funcionários"
-      ],
-      answer: 1
-    },
-    {
-      q: "Quais são as quatro funções clássicas da administração?",
-      options: [
-        "Produção, Vendas, Marketing e Finanças",
-        "Comunicação, Motivação, Liderança e Controle",
-        "Planejamento, Organização, Direção e Controle",
-        "Estratégia, Tática, Operação e Avaliação",
-        "Recrutamento, Seleção, Treinamento e Demissão"
-      ],
-      answer: 2
-    },
-    {
-      q: "O que é missão organizacional?",
-      options: [
-        "O lucro esperado pela empresa no próximo ano",
-        "O conjunto de metas de longo prazo da organização",
-        "A razão de ser da organização, seu propósito fundamental",
-        "O plano de expansão da empresa para novos mercados",
-        "A lista de produtos e serviços oferecidos pela empresa"
-      ],
-      answer: 2
-    },
-    {
-      q: "O que significa a sigla SWOT na análise estratégica?",
-      options: [
-        "Sales, Workforce, Operations, Technology",
-        "Strengths, Weaknesses, Opportunities, Threats",
-        "Strategy, Work, Objectives, Teams",
-        "Systems, Workflow, Outputs, Targets",
-        "Structure, Wages, Organization, Training"
-      ],
-      answer: 1
-    },
-    {
-      q: "O que é estrutura organizacional matricial?",
-      options: [
-        "Uma estrutura onde todos os funcionários se reportam a um único gestor",
-        "Uma estrutura dividida exclusivamente por funções departamentais",
-        "Uma estrutura que combina departamentos funcionais com equipes de projetos, gerando dupla subordinação",
-        "Uma estrutura horizontal sem hierarquia definida",
-        "Uma estrutura utilizada apenas em empresas multinacionais"
-      ],
-      answer: 2
-    },
-    {
-      q: "Qual teoria administrativa defende que não existe uma única forma ideal de organizar uma empresa, pois isso depende do ambiente externo?",
-      options: [
-        "Teoria Clássica de Fayol",
-        "Teoria das Relações Humanas",
-        "Teoria da Burocracia de Weber",
-        "Teoria da Contingência",
-        "Teoria Científica de Taylor"
-      ],
-      answer: 3
-    },
-    {
-      q: "O que é liderança situacional?",
-      options: [
-        "Um estilo de liderança autoritário aplicado em situações de crise",
-        "A capacidade do líder de adaptar seu estilo conforme o nível de maturidade dos liderados",
-        "A liderança exercida apenas em situações de emergência",
-        "Um modelo de liderança baseado exclusivamente em recompensas financeiras",
-        "A liderança praticada por gestores de diferentes países"
-      ],
-      answer: 1
-    },
-    {
-      q: "O que é o Balanced Scorecard (BSC)?",
-      options: [
-        "Um sistema de remuneração variável baseado em metas individuais",
-        "Uma ferramenta de controle financeiro criada por contadores americanos",
-        "Um modelo de gestão estratégica que avalia o desempenho em quatro perspectivas: financeira, clientes, processos internos e aprendizado",
-        "Um método de avaliação de desempenho exclusivamente financeiro",
-        "Um software de gestão integrada de recursos empresariais"
-      ],
-      answer: 2
-    },
-    {
-      q: "Na Cadeia de Valor de Porter, qual é a diferença entre atividades primárias e atividades de suporte?",
-      options: [
-        "Atividades primárias geram lucro; atividades de suporte geram custos",
-        "Atividades primárias estão ligadas diretamente à criação, venda e entrega do produto; atividades de suporte sustentam as primárias (como RH e TI)",
-        "Atividades primárias são realizadas pela diretoria; atividades de suporte pelos operários",
-        "Atividades primárias ocorrem na sede; atividades de suporte nas filiais",
-        "Não há diferença funcional; a classificação é apenas contábil"
-      ],
-      answer: 1
-    },
-    {
-      q: "Em ambientes de alta complexidade e incerteza, como os descritos pela Teoria do Caos, qual abordagem administrativa é mais adequada?",
-      options: [
-        "Planejamento rígido de longo prazo com metas fixas e hierarquia centralizada",
-        "Aplicação estrita da burocracia weberiana para padronizar processos",
-        "Gestão ágil e adaptativa, com tomada de decisão descentralizada, ciclos curtos de feedback e alta tolerância à ambiguidade",
-        "Foco exclusivo em redução de custos operacionais para garantir eficiência",
-        "Eliminação completa de processos formais para estimular a criatividade"
-      ],
-      answer: 2
-    }
-  ];
+  {
+    q: "O que é uma empresa?",
+    options: [
+      "Um local apenas para produzir produtos",
+      "Uma organização criada para atingir objetivos e oferecer bens ou serviços",
+      "Um grupo de pessoas sem objetivos definidos",
+      "Um órgão do governo"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual é a principal função do administrador?",
+    options: [
+      "Executar todas as tarefas da empresa sozinho",
+      "Controlar apenas as finanças",
+      "Planejar, organizar, dirigir e controlar recursos",
+      "Vender produtos para os clientes"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que significa planejar?",
+    options: [
+      "Definir objetivos e ações para alcançá-los",
+      "Controlar gastos da empresa",
+      "Contratar novos funcionários",
+      "Criar produtos novos"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que é organização dentro da administração?",
+    options: [
+      "Guardar documentos em arquivos",
+      "Distribuir recursos e tarefas para atingir objetivos",
+      "Realizar auditorias financeiras",
+      "Criar campanhas de marketing"
+    ],
+    answer: 1
+  },
+  {
+    q: "O que é liderança?",
+    options: [
+      "Mandar em todos os funcionários",
+      "Controlar apenas o setor financeiro",
+      "Influenciar e orientar pessoas para alcançar objetivos",
+      "Fiscalizar o trabalho dos clientes"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que é uma meta?",
+    options: [
+      "Um problema da empresa",
+      "Um resultado que se deseja alcançar",
+      "Um funcionário experiente",
+      "Uma reunião de trabalho"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual setor geralmente cuida da contratação de funcionários?",
+    options: [
+      "Marketing",
+      "Produção",
+      "Recursos Humanos",
+      "Logística"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que é trabalho em equipe?",
+    options: [
+      "Quando uma pessoa realiza todas as atividades",
+      "Quando várias pessoas colaboram para atingir um objetivo comum",
+      "Quando apenas os gestores tomam decisões",
+      "Quando cada funcionário trabalha isoladamente"
+    ],
+    answer: 1
+  },
+  {
+    q: "Qual é a importância da comunicação em uma empresa?",
+    options: [
+      "Evitar o contato entre setores",
+      "Aumentar apenas as vendas",
+      "Facilitar a troca de informações e o trabalho",
+      "Reduzir a produtividade"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que é um cliente?",
+    options: [
+      "Pessoa ou organização que compra produtos ou serviços",
+      "Funcionário da empresa",
+      "Fornecedor de matéria-prima",
+      "Concorrente da empresa"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que é um fornecedor?",
+    options: [
+      "Pessoa que compra produtos",
+      "Empresa concorrente",
+      "Quem fornece produtos ou serviços para a empresa",
+      "Gestor financeiro"
+    ],
+    answer: 2
+  },
+  {
+    q: "Qual é o objetivo do controle na administração?",
+    options: [
+      "Verificar se os resultados estão de acordo com o planejado",
+      "Criar novos produtos",
+      "Contratar funcionários",
+      "Aumentar os preços"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que é produtividade?",
+    options: [
+      "Quantidade de reuniões realizadas",
+      "Capacidade de produzir mais utilizando bem os recursos",
+      "Número de funcionários da empresa",
+      "Valor dos impostos pagos"
+    ],
+    answer: 1
+  },
+  {
+    q: "O que é um organograma?",
+    options: [
+      "Um relatório financeiro",
+      "Um documento jurídico",
+      "Uma representação gráfica da estrutura da empresa",
+      "Uma lista de clientes"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que é motivação no ambiente de trabalho?",
+    options: [
+      "Desejo e disposição para realizar atividades",
+      "Obrigação de cumprir horários",
+      "Controle rígido dos funcionários",
+      "Apenas aumento de salário"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que é tomada de decisão?",
+    options: [
+      "Escolher a melhor alternativa para resolver uma situação",
+      "Realizar uma reunião",
+      "Criar um novo cargo",
+      "Fazer propaganda"
+    ],
+    answer: 0
+  },
+  {
+    q: "Qual é a principal finalidade de uma reunião de trabalho?",
+    options: [
+      "Promover lazer aos funcionários",
+      "Trocar informações e alinhar ações",
+      "Aplicar punições",
+      "Realizar vendas"
+    ],
+    answer: 1
+  },
+  {
+    q: "O que é um objetivo organizacional?",
+    options: [
+      "Um problema da empresa",
+      "Uma regra trabalhista",
+      "Um resultado que a organização pretende alcançar",
+      "Um cargo de liderança"
+    ],
+    answer: 2
+  },
+  {
+    q: "O que significa eficiência?",
+    options: [
+      "Fazer as tarefas utilizando bem os recursos disponíveis",
+      "Produzir mais independentemente dos custos",
+      "Aumentar o número de funcionários",
+      "Criar novos departamentos"
+    ],
+    answer: 0
+  },
+  {
+    q: "O que significa eficácia?",
+    options: [
+      "Reduzir gastos da empresa",
+      "Alcançar os objetivos planejados",
+      "Contratar mais pessoas",
+      "Controlar estoques"
+    ],
+    answer: 1
+  }
+];
